@@ -1,3 +1,4 @@
+const { reserveStock, releaseStock } = require('../utils/reserveStock');
 const asyncErrorHandler = require('../middlewares/asyncErrorHandler');
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
@@ -20,14 +21,26 @@ exports.newOrder = asyncErrorHandler(async (req, res, next) => {
         return next(new ErrorHandler("Order Already Placed", 400));
     }
 
-    const order = await Order.create({
-        shippingInfo,
-        orderItems,
-        paymentInfo,
-        totalPrice,
-        paidAt: Date.now(),
-        user: req.user._id,
-    });
+    // Take the stock first
+    const reservation = await reserveStock(orderItems);
+    if (!reservation.ok) {
+        return next(new ErrorHandler(`${reservation.name}: ${reservation.reason}`, 409));
+    }
+
+    let order;
+    try {
+        order = await Order.create({
+            shippingInfo,
+            orderItems,
+            paymentInfo,
+            totalPrice,
+            paidAt: Date.now(),
+            user: req.user._id,
+        });
+    } catch (err) {
+        await releaseStock(orderItems); // order failed so give the stock back
+        throw err;
+    }
 
     await sendEmail({
         email: req.user.email,
@@ -115,9 +128,6 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
 
     if (req.body.status === "Shipped") {
         order.shippedAt = Date.now();
-        order.orderItems.forEach(async (i) => {
-            await updateStock(i.product, i.quantity)
-        });
     }
 
     order.orderStatus = req.body.status;
@@ -132,11 +142,6 @@ exports.updateOrder = asyncErrorHandler(async (req, res, next) => {
     });
 });
 
-async function updateStock(id, quantity) {
-    const product = await Product.findById(id);
-    product.stock -= quantity;
-    await product.save({ validateBeforeSave: false });
-}
 
 // Delete Order ---ADMIN
 exports.deleteOrder = asyncErrorHandler(async (req, res, next) => {
