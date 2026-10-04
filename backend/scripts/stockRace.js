@@ -1,5 +1,4 @@
-// backend/scripts/stockRace.js
-// Run from the project root: node backend/scripts/stockRace.js <productId>
+const { reserveStock } = require('../utils/reserveStock');
 require('dotenv').config({ path: 'backend/config/config.env' });
 const mongoose = require('mongoose');
 const Product = require('../models/productModel');
@@ -32,6 +31,11 @@ async function atomicReserve(id, qty) {
     return updated !== null;
 }
 
+async function realReserve(id, qty) {
+    const result = await reserveStock([{ product: id, quantity: qty, name: 'test' }]);
+    return result.ok;
+}
+
 async function run(label, reserve) {
     await Product.updateOne({ _id: productId }, { stock: 1 }); // reset to 1 unit
     const results = await Promise.all([
@@ -49,5 +53,6 @@ async function run(label, reserve) {
     await mongoose.connect(process.env.MONGO_URI);
     await run('NAIVE (check, then save)', naiveReserve);
     await run('ATOMIC (findOneAndUpdate)', atomicReserve);
+    await run('REAL reserveStock()', realReserve);
     await mongoose.disconnect();
 })();
