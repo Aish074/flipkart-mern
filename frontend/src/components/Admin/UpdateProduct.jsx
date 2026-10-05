@@ -37,6 +37,8 @@ const UpdateProduct = () => {
     const [category, setCategory] = useState("");
     const [stock, setStock] = useState(0);
     const [warranty, setWarranty] = useState(0);
+    const [subcategory, setSubcategory] = useState("");
+    const [tags, setTags] = useState("");
     const [brand, setBrand] = useState("");
     const [images, setImages] = useState([]);
     const [oldImages, setOldImages] = useState([]);
@@ -127,6 +129,8 @@ const UpdateProduct = () => {
         formData.set("category", category);
         formData.set("stock", stock);
         formData.set("warranty", warranty);
+        formData.set("subcategory", subcategory);
+        formData.set("tags", tags);
         formData.set("brandname", brand);
         formData.set("logo", logo);
 
@@ -159,6 +163,8 @@ const UpdateProduct = () => {
             setCategory(product.category);
             setStock(product.stock);
             setWarranty(product.warranty);
+            setSubcategory(product.subcategory || "");
+            setTags((product.tags || []).join(", "));
             setBrand(product.brand.name);
             setHighlights(product.highlights);
             setSpecs(product.specifications);
@@ -285,6 +291,25 @@ const UpdateProduct = () => {
                         />
                     </div>
 
+                    <div className="flex justify-between gap-4">
+                        <TextField
+                            label="Subcategory (e.g. gaming)"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={subcategory}
+                            onChange={(e) => setSubcategory(e.target.value)}
+                        />
+                        <TextField
+                            label="Tags (comma separated)"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={tags}
+                            onChange={(e) => setTags(e.target.value)}
+                        />
+                    </div>
+                    
                     <div className="flex flex-col gap-2">
                         <div className="flex justify-between items-center border rounded">
                             <input value={highlightInput} onChange={(e) => setHighlightInput(e.target.value)} type="text" placeholder="Highlight" className="px-2 flex-1 outline-none border-none" />

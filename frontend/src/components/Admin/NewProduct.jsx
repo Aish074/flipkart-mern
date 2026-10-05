@@ -35,6 +35,8 @@ const NewProduct = () => {
     const [category, setCategory] = useState("");
     const [stock, setStock] = useState(0);
     const [warranty, setWarranty] = useState(0);
+    const [subcategory, setSubcategory] = useState("");
+    const [tags, setTags] = useState("");
     const [brand, setBrand] = useState("");
     const [images, setImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
@@ -128,6 +130,8 @@ const NewProduct = () => {
         formData.set("category", category);
         formData.set("stock", stock);
         formData.set("warranty", warranty);
+        formData.set("subcategory", subcategory);
+        formData.set("tags", tags);
         formData.set("brandname", brand);
         formData.set("logo", logo);
 
@@ -258,6 +262,25 @@ const NewProduct = () => {
                             required
                             value={warranty}
                             onChange={(e) => setWarranty(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex justify-between gap-4">
+                        <TextField
+                             label="Subcategory (e.g. gaming)"
+                             variant="outlined"
+                             size="small"
+                             fullWidth
+                             value={subcategory}
+                             onChange={(e) => setSubcategory(e.target.value)}
+                        />
+                        <TextField
+                            label="Tags (comma separated)"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={tags}
+                            onChange={(e) => setTags(e.target.value)}
                         />
                     </div>
 
