@@ -25,3 +25,17 @@ exports.authorizeRoles = (...roles) => {
         next();
     }
 }
+
+// anonymous visitors are tracked
+exports.optionalAuth = asyncErrorHandler(async (req, res, next) => {
+    const { token } = req.cookies;
+    if (token) {
+        try {
+            const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decodedData.id);
+        } catch (err) {
+            // invalid or expired token: treat as anonymous
+        }
+    }
+    next();
+});

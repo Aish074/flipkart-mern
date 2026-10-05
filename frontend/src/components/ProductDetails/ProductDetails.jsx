@@ -27,6 +27,7 @@ import { getDeliveryDate, getDiscount } from '../../utils/functions';
 import { addToWishlist, removeFromWishlist } from '../../actions/wishlistAction';
 import MinCategory from '../Layouts/MinCategory';
 import MetaData from '../Layouts/MetaData';
+import { trackEvent } from '../../utils/tracker';
 
 const ProductDetails = () => {
 
@@ -85,9 +86,10 @@ const ProductDetails = () => {
     }
 
     const addToCartHandler = () => {
-        dispatch(addItemsToCart(productId));
-        enqueueSnackbar("Product Added To Cart", { variant: "success" });
-    }
+       dispatch(addItemsToCart(productId));
+       trackEvent('add_to_cart', { productId });
+       enqueueSnackbar("Product Added To Cart", { variant: "success" });
+   }
 
     const handleDialogClose = () => {
         setOpen(!open);
@@ -124,6 +126,10 @@ const ProductDetails = () => {
     useEffect(() => {
         dispatch(getSimilarProducts(product?.category));
     }, [dispatch, product, product.category]);
+
+    useEffect(() => {
+       trackEvent('product_view', { productId });
+    }, [productId]);
 
     return (
         <>
