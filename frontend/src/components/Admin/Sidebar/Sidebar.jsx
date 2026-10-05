@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Sidebar.css';
 import { useSnackbar } from 'notistack';
 import { logoutUser } from '../../../actions/userAction';
+import CampaignIcon from '@mui/icons-material/Campaign';
 
 const navMenu = [
     {
@@ -44,6 +45,11 @@ const navMenu = [
         icon: <ReviewsIcon />,
         label: "Reviews",
         ref: "/admin/reviews",
+    },
+    {
+        icon: <CampaignIcon />,
+        label: "Campaigns",
+        ref: "/admin/campaigns",
     },
     {
         icon: <AccountBoxIcon />,
