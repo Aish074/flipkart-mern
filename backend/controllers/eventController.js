@@ -3,6 +3,7 @@ const asyncErrorHandler = require('../middlewares/asyncErrorHandler');
 const Event = require('../models/eventModel');
 const Product = require('../models/productModel');
 const { EVENT_TYPES } = require('../models/eventModel');
+const Campaign = require('../models/campaignModel');
 
 // Record a user activity event
 exports.trackEvent = asyncErrorHandler(async (req, res, next) => {
@@ -34,7 +35,13 @@ exports.trackEvent = asyncErrorHandler(async (req, res, next) => {
     if (typeof keyword === 'string') doc.keyword = keyword.slice(0, 100).toLowerCase();
     if (!doc.category && typeof category === 'string') doc.category = category.slice(0, 50);
     if (campaignId && mongoose.isValidObjectId(campaignId)) doc.campaign = campaignId;
-
+    
+    // ad events must point at a real campaign
+    if (type === 'ad_impression' || type === 'ad_click') {
+        if (!campaignId || !mongoose.isValidObjectId(campaignId) || !(await Campaign.exists({ _id: campaignId }))) {
+            return res.status(400).json({ success: false, message: 'Invalid campaign' });
+        }
+    }
     await Event.create(doc);
 
     res.status(201).json({ success: true });

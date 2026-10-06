@@ -1,5 +1,6 @@
 const Campaign = require('../models/campaignModel');
 const { buildProfile } = require('./interestProfile');
+const Event = require('../models/eventModel');
 
 const MIN_RELEVANCE = 0.2;   // weaker matches are not shown
 
@@ -27,6 +28,16 @@ async function selectAds({ sessionId, placement, contextProduct, limit = 3 }) {
     const campaigns = await Campaign.find({ status: 'active', placements: placement })
         .populate('product', 'name price cuttedPrice images stock ratings numOfReviews brand.name')
         .lean();
+    
+     // clicks per campaign since midnight, to work out today's spend
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const clickRows = await Event.aggregate([
+           { $match: { type: 'ad_click', createdAt: { $gte: startOfDay }, campaign: { $in: campaigns.map((c) => c._id) } } },
+           { $group: { _id: '$campaign', clicks: { $sum: 1 } } },
+    ]);
+    const clicksToday = {};
+    clickRows.forEach((r) => { clicksToday[String(r._id)] = r.clicks; });
 
     const ranked = [];
 
@@ -37,6 +48,7 @@ async function selectAds({ sessionId, placement, contextProduct, limit = 3 }) {
         // 1. basic eligibility
         if (!promoted || promoted.stock < 1) continue;
         if (contextProduct && String(promoted._id) === String(contextProduct._id)) continue;
+        if (c.dailyBudget > 0 && (clicksToday[String(c._id)] || 0) * c.bid >= c.dailyBudget) continue;
 
         // 2. the shopper must have done the target event
         if (t.triggerEvents.length) {

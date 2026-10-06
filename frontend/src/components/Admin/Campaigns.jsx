@@ -172,6 +172,10 @@ const Campaigns = () => {
                             <th>Promoted product</th>
                             <th>Targeting</th>
                             <th>Bid</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>Spend</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
@@ -188,6 +192,10 @@ const Campaigns = () => {
                                     {c.targeting.triggerEvents.join(', ') || 'any event'}
                                 </td>
                                 <td>₹{c.bid}</td>
+                                <td>{c.stats.impressions}</td>
+                                <td>{c.stats.clicks}</td>
+                                <td>{c.stats.ctr}%</td>
+                                <td>₹{c.stats.spend}</td>
                                 <td className={c.status === 'active' ? 'text-primary-green' : 'text-gray-500'}>{c.status}</td>
                                 <td className="whitespace-nowrap">
                                     <button onClick={() => changeStatus(c)} className="text-primary-blue mr-3">
@@ -198,7 +206,7 @@ const Campaigns = () => {
                             </tr>
                         ))}
                         {campaigns.length === 0 && (
-                            <tr><td colSpan="6" className="py-4 text-gray-500">No campaigns yet.</td></tr>
+                            <tr><td colSpan="10" className="py-4 text-gray-500">No campaigns yet.</td></tr>
                         )}
                     </tbody>
                 </table>
