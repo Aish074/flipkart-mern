@@ -1,7 +1,7 @@
 const SESSION_KEY = 'adSessionId';
 
 // A random ID saved in the browser, so anonymous visitors can be recognised
-function getSessionId() {
+export function getSessionId() {
     try {
         let id = localStorage.getItem(SESSION_KEY);
         if (!id) {
