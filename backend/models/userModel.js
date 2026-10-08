@@ -63,6 +63,7 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 }
 
+//forgot passowrd 
 userSchema.methods.getResetPasswordToken = async function () {
 
     // generate token

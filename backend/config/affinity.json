@@ -1,0 +1,17 @@
+{
+  "categories": {
+    "laptops": { "electronics": 0.8 },
+    "mobiles": { "electronics": 0.8 },
+    "electronics": { "laptops": 0.4, "mobiles": 0.4 },
+    "appliances": { "home": 0.6 },
+    "home": { "appliances": 0.6 }
+  },
+  "tags": {
+    "laptop": { "mouse": 0.8, "keyboard": 0.8, "accessories": 0.7 },
+    "gaming": { "rtx": 0.7, "mouse": 0.7, "keyboard": 0.7, "accessories": 0.6 },
+    "rtx": { "gaming": 0.8, "laptop": 0.4 },
+    "smartphone": { "earbuds": 0.6, "accessories": 0.5 },
+    "mobile": { "earbuds": 0.6, "accessories": 0.5 },
+    "earbuds": { "smartphone": 0.4, "audio": 0.6 }
+  }
+}

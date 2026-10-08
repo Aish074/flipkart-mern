@@ -34,6 +34,7 @@ import UpdateProduct from './components/Admin/UpdateProduct';
 import UserTable from './components/Admin/UserTable';
 import UpdateUser from './components/Admin/UpdateUser';
 import ReviewsTable from './components/Admin/ReviewsTable';
+import Campaigns from './components/Admin/Campaigns';
 import Wishlist from './components/Wishlist/Wishlist';
 import NotFound from './components/NotFound';
 
@@ -236,6 +237,14 @@ function App() {
             </Dashboard>
           </ProtectedRoute>
         } ></Route>
+
+        <Route path="/admin/campaigns" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={6}>
+              <Campaigns />
+            </Dashboard>
+          </ProtectedRoute>
+        } />
 
         <Route path="*" element={<NotFound />}></Route>
 

@@ -19,6 +19,7 @@ import { categories } from '../../utils/constants';
 import MetaData from '../Layouts/MetaData';
 import { getRandomProducts } from '../../utils/functions';
 import { useLocation } from 'react-router-dom';
+import { trackEvent } from '../../utils/tracker';
 
 const Products = () => {
 
@@ -50,6 +51,10 @@ const Products = () => {
         setCategory("");
         setRatings(0);
     }
+
+    useEffect(() => {
+        if (category) trackEvent('category_visit', { category });
+    }, [category]);
 
     useEffect(() => {
         if (error) {

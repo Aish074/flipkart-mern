@@ -89,6 +89,7 @@ export const productDetailsReducer = (state = { product: {} }, { type, payload }
             };
         case PRODUCT_DETAILS_SUCCESS:
             return {
+                ...state,
                 loading: false,
                 product: payload,
             };

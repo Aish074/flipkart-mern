@@ -1,6 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from '../../../utils/tracker';
 
 const Searchbar = () => {
 
@@ -8,12 +9,13 @@ const Searchbar = () => {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        if(keyword.trim()){
-            navigate(`/products/${keyword}`)
-        } else {
-            navigate('/products');
-        }
+       e.preventDefault();
+       if (keyword.trim()) {
+           trackEvent('search', { keyword: keyword.trim() });
+           navigate(`/products/${keyword}`)
+       } else {
+           navigate('/products');
+       }
     }
 
     return (

@@ -14,7 +14,7 @@ exports.getAllProducts = asyncErrorHandler(async (req, res, next) => {
     const searchFeature = new SearchFeatures(Product.find(), req.query)
         .search()
         .filter();
-
+    
     let products = await searchFeature.query;
     let filteredProductsCount = products.length;
 
@@ -109,6 +109,10 @@ exports.createProduct = asyncErrorHandler(async (req, res, next) => {
         specs.push(JSON.parse(s))
     });
     req.body.specifications = specs;
+    
+    if (typeof req.body.tags === 'string') {
+        req.body.tags = req.body.tags.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
+    }
 
     const product = await Product.create(req.body);
 
@@ -175,6 +179,10 @@ exports.updateProduct = asyncErrorHandler(async (req, res, next) => {
     });
     req.body.specifications = specs;
     req.body.user = req.user.id;
+    
+    if (typeof req.body.tags === 'string') {
+        req.body.tags = req.body.tags.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
+    }
 
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
         new: true,

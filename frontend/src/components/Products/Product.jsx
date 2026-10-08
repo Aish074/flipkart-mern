@@ -5,6 +5,7 @@ import { getDiscount } from '../../utils/functions';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist } from '../../actions/wishlistAction';
 import { useSnackbar } from 'notistack';
+import { trackEvent } from '../../utils/tracker';
 
 const Product = ({ _id, name, images, ratings, numOfReviews, price, cuttedPrice }) => {
 
@@ -28,7 +29,7 @@ const Product = ({ _id, name, images, ratings, numOfReviews, price, cuttedPrice 
     return (
         <div className="flex flex-col items-start gap-2 px-4 py-6 relative hover:shadow-lg rounded-sm">
             {/* <!-- image & product title --> */}
-            <Link to={`/product/${_id}`} className="flex flex-col items-center text-center group">
+            <Link to={`/product/${_id}`} onClick={() => trackEvent('product_click', {product: _id})} className="flex flex-col items-center text-center group">
                 <div className="w-44 h-48">
                     <img draggable="false" className="w-full h-full object-contain" src={images && images[0].url} alt="" />
                 </div>
