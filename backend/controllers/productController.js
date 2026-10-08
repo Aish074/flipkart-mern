@@ -14,7 +14,7 @@ exports.getAllProducts = asyncErrorHandler(async (req, res, next) => {
     const searchFeature = new SearchFeatures(Product.find(), req.query)
         .search()
         .filter();
-
+    
     let products = await searchFeature.query;
     let filteredProductsCount = products.length;
 
@@ -183,7 +183,7 @@ exports.updateProduct = asyncErrorHandler(async (req, res, next) => {
     if (typeof req.body.tags === 'string') {
         req.body.tags = req.body.tags.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
     }
-    
+
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
