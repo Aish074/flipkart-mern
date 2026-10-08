@@ -3,8 +3,6 @@
 
 A MERN e-commerce app extended with a **simplified ad-serving engine**. It tracks what shoppers do, builds an interest profile, and shows ranked sponsored products. Admins create campaigns and see impressions, clicks, CTR and spend.
 
-> Learning project. Not affiliated with, or endorsed by, Flipkart.
-
 ## Credits
 
 Fork of [jigar-sable/flipkart-mern](https://github.com/jigar-sable/flipkart-mern) by Jigar Sable (MIT license). The storefront (auth, products, cart, orders, reviews, admin panel, payments) comes from that project. Everything under **What I added** is my own work.
