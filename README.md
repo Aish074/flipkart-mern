@@ -55,10 +55,6 @@ In `backend/config/config.env`, set at least `MONGO_URI` (the code reads `MONGO_
 
 More in the technical notes.
 
-## Contact
-
-[Your Name](https://www.linkedin.com/in/YOUR-LINKEDIN) | [GitHub](https://github.com/YOUR-USERNAME)
-
 ## License
 
 MIT. Copyright (c) 2022 Jigar Sable (original project). Copyright (c) 2026 Your Name (additions). See [LICENSE](LICENSE).
