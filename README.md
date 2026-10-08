@@ -1,94 +1,64 @@
-# Flipkart - MERN
-Full-Stack Flipkart with Admin Dashboard & Paytm Payment Gateway.
 
-[Visit Now](https://flipkartweb-mern.vercel.app) 🚀
+# Flipkart MERN: Personalized Ad Engine
 
-## 🖥️ Tech Stack
-**Frontend:**
+A MERN e-commerce app extended with a **simplified ad-serving engine**. It tracks what shoppers do, builds an interest profile, and shows ranked sponsored products. Admins create campaigns and see impressions, clicks, CTR and spend.
 
-![reactjs](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)&nbsp;
-![react-router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)&nbsp;
-![redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)&nbsp;
-![tailwindcss](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)&nbsp;
-![mui](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white)&nbsp;
-![chart-js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)&nbsp;
+> Learning project. Not affiliated with, or endorsed by, Flipkart.
 
-**Backend:**
+## Credits
 
-![nodejs](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)&nbsp;
-![expressjs](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)&nbsp;
-![mongodb](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)&nbsp;
-![jwt](	https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)&nbsp;
+Fork of [jigar-sable/flipkart-mern](https://github.com/jigar-sable/flipkart-mern) by Jigar Sable (MIT license). The storefront (auth, products, cart, orders, reviews, admin panel, payments) comes from that project. Everything under **What I added** is my own work.
 
-**Payment Gateway:**
+## What I added
 
-![paytm](https://img.shields.io/badge/Paytm-002970?style=for-the-badge&logo=paytm&logoColor=00BAF2)
+| Feature | Summary |
+|---|---|
+| **Ad engine** | Event tracking, interest profile, campaign targeting, ranking, impression/click logging, daily budget, CTR dashboard |
+| **Stock race-condition fix** | Atomic stock reservation at order time, so the last item can't be sold twice |
+| **Bug fixes** | Logout crash on a `null` user, product page crash when a product fails to load, missing `nodemon` dev dependency |
 
-**Cloud Storage:** [Cloudinary](https://cloudinary.com/)
+<!-- Add 2-3 screenshots here: a sponsored ad with its reason, and the Admin > Campaigns table.
+     Save them in docs/ and link them like: ![Sponsored ad](docs/ad-example.png) -->
 
-**Mail Service:** [Sendgrid](https://sendgrid.com/)
+## How the ad engine works (short version)
 
-## 🚀 Features
+1. The React app sends shopper events (views, clicks, add to cart, searches) to the API.
+2. For each ad request, the server builds an **interest profile** from recent events, with newer events counting more.
+3. It filters **eligible campaigns** (active, in stock, matching targeting and price band, within budget).
+4. It ranks them by **relevance x bid**, with a penalty for ads already shown, and returns the best few with a reason such as "Because you've been browsing laptops".
+5. Impressions and clicks are logged and shown as CTR and spend in the admin dashboard.
 
-**User Account Management**
-- Login/Signup: 🚪 Users can create an account or log in to an existing one.
-- Update Profile/Password: 🔐 Users can update their profile information and change their passwords.
-  
-**Password Management**
-- Reset Password Mail: 📧 Utilizing Sendgrid, users can reset their passwords via email.
-  
-**Shopping Cart**
-- Add/Remove Items: 🛒 Users can add items to their shopping cart or remove them as needed.
-- Update Quantities: 🔢 Quantities of items in the cart can be adjusted.
-  
-**Saved Items**
-- Save For Later: 💾 Users can move items from the cart to a "Saved For Later" list or remove them from it.
-  
-**Wishlist**
-- Add/Remove Items: ❤️ Users can add items to their wishlist or remove them from it.
-  
-**Product Browsing**
-- Pagination: 📚 Products are paginated, with 12 products displayed per page by default.
-- Search: 🔍 Users can search for products.
-- Filters: 🎛️ Products can be filtered based on categories, ratings, and price range.
-  
-**Checkout Process**
-- Shipping Info: 🚚 Shipping information is stored in session storage for ease of checkout.
-- Payment Options: 💳 Users can pay through Paytm payment gateway for checkout.
-  
-**Order Management**
-- My Orders: 📦 Users can view their order history with various filters.
-- Order Details: ℹ️ Details of all ordered items are accessible.
-- Order Confirmation: ✉️ Users receive email notifications with comprehensive order details upon placing an order.
-  
-**Product Interaction**
-- Review Products: 🌟 Users can review products.
-  
-**Admin Features**
-- Dashboard: 🖥️ Admins have access to a dedicated dashboard.
-- Order Management: 📊 Admins can update order statuses and delete orders.
-- Product Management: 📝 Admins can add/update products.
-- User Management: 👥 Admins can update user data and delete users.
-- Review Management: 📜 Admins can view and delete product reviews.
-- Stock Management: 📉 Product stock is automatically decreased upon shipment.
+Full details, the API, and the stock-fix write-up: **[docs/technical-notes.md](docs/technical-notes.md)**
 
-## Sneak Peek of Admin Dashboard 🙈 :
-![Capture](https://user-images.githubusercontent.com/64949957/153995268-0cb769b9-e0ee-48ea-83c1-09b881df4101.PNG)
+## Tech stack
 
-<table>
-  <tr>
-    <td><img src="https://user-images.githubusercontent.com/64949957/153995383-367cbcc0-cce5-4523-a999-b8d92e44d6ab.jpg" alt="mockup" /></td>
-    <td><img src="https://user-images.githubusercontent.com/64949957/153995406-45e36cbc-8d42-4416-b23a-08ad592e4ebc.jpg" alt="mockups" /></td>
-  </tr>
-  <tr>
-    <td><img src="https://user-images.githubusercontent.com/64949957/153996560-bd631f30-46f0-4248-83b3-d8ce44a8f9e4.PNG" alt="mockup" /></td>
-    <td><img src="https://user-images.githubusercontent.com/64949957/153996577-57b1a82d-064a-49dc-9055-e2bceb854ab2.PNG" alt="mockups" /></td>
-  </tr>
-</table>
+React 17, Redux, Tailwind CSS, MUI | Node.js, Express | MongoDB (Mongoose) | JWT auth | Cloudinary
 
-<h2>📬 Contact</h2>
+## Quick start
 
-Feel free to reach me through the below handles if you'd like to contact me.
+```bash
+git clone https://github.com/YOUR-USERNAME/flipkart-mern.git
+cd flipkart-mern
+npm install
+npm install --prefix frontend
+cp backend/config/config.env.example backend/config/config.env
+npm run dev     # backend :4000, frontend :3000
+```
 
-[![linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jigar-sablee)
-[![instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/jigarsable.dev)
+In `backend/config/config.env`, set at least `MONGO_URI` (the code reads `MONGO_URI`, although the example file says `MONGO_URL`), `JWT_SECRET`, and the three `CLOUDINARY_*` values. To get an admin, sign up, then set that user's `role` to `admin` in MongoDB. More setup notes are in the technical notes.
+
+## Known limitations
+
+- Events come from the browser, so click fraud isn't prevented.
+- Ads are shown on the product page only.
+- No automated tests yet.
+
+More in the technical notes.
+
+## Contact
+
+[Your Name](https://www.linkedin.com/in/YOUR-LINKEDIN) | [GitHub](https://github.com/YOUR-USERNAME)
+
+## License
+
+MIT. Copyright (c) 2022 Jigar Sable (original project). Copyright (c) 2026 Your Name (additions). See [LICENSE](LICENSE).
